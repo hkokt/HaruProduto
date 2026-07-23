@@ -16,6 +16,7 @@ import type {
 import { apiRequest, jsonBody } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { OffsetPagination } from '../components/OffsetPagination'
+import { ProductPicker, type ProductSelection } from '../components/ProductPicker'
 import {
   ConfirmModal,
   Detail,
@@ -60,6 +61,7 @@ interface SaveProductVariables {
 interface SaveComponentVariables {
   data: FormData
   component?: ProductComponent
+  product?: ProductSelection
 }
 
 interface ProductSearchResultsProps {
@@ -91,6 +93,7 @@ export function ProductsPage() {
   const [productId, setProductId] = useState<number | null>(null)
   const [productDialog, setProductDialog] = useState<ProductDialog>(null)
   const [componentDialog, setComponentDialog] = useState<ComponentDialog>(null)
+  const [componentProduct, setComponentProduct] = useState<ProductSelection | null>(null)
   const [deletingProduct, setDeletingProduct] = useState(false)
   const [deletingComponent, setDeletingComponent] = useState<ProductComponent | null>(null)
   const [notice, setNotice] = useState('')
@@ -194,22 +197,29 @@ export function ProductsPage() {
   })
 
   const saveComponent = useMutation({
-    mutationFn: ({ data, component }: SaveComponentVariables) => {
-      const body = {
-        ...(component ? {} : { componentProductId: numberValue(data, 'componentProductId') }),
+    mutationFn: ({ data, component, product: selectedComponent }: SaveComponentVariables) => {
+      const componentData = {
         quantity: numberValue(data, 'quantity'),
         measurementUnit: stringValue(data, 'measurementUnit') as MeasurementUnit,
       }
-      const path = component
-        ? `/api/products/${productId}/components/${component.componentProductId}`
-        : `/api/products/${productId}/components`
-      return apiRequest(path, auth.getAccessToken, {
-        method: component ? 'PUT' : 'POST',
-        body: jsonBody(body),
+
+      if (component) {
+        return apiRequest(
+          `/api/products/${productId}/components/${component.componentProductId}`,
+          auth.getAccessToken,
+          { method: 'PUT', body: jsonBody(componentData) },
+        )
+      }
+
+      if (!selectedComponent) throw new Error('A component product must be selected')
+      return apiRequest(`/api/products/${productId}/components`, auth.getAccessToken, {
+        method: 'POST',
+        body: jsonBody({ componentProductId: selectedComponent.id, ...componentData }),
       })
     },
     onSuccess: async () => {
       setComponentDialog(null)
+      setComponentProduct(null)
       setNotice('Composição atualizada com sucesso.')
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['product', productId] }),
@@ -251,6 +261,20 @@ export function ProductsPage() {
   function selectProduct(result: ProductSearchResult) {
     setNotice('')
     setProductId(result.id)
+  }
+
+  function closeComponentDialog() {
+    setComponentDialog(null)
+    setComponentProduct(null)
+  }
+
+  function submitComponent(data: FormData) {
+    if (!componentDialog) return
+    if (componentDialog.mode === 'edit') {
+      saveComponent.mutate({ data, component: componentDialog.component })
+      return
+    }
+    if (componentProduct) saveComponent.mutate({ data, product: componentProduct })
   }
 
   function changeSearch(value: string) {
@@ -365,6 +389,7 @@ export function ProductsPage() {
                   className="button button-secondary button-small"
                   onClick={() => {
                     saveComponent.reset()
+                    setComponentProduct(null)
                     setComponentDialog({ mode: 'create' })
                   }}
                 >
@@ -394,6 +419,7 @@ export function ProductsPage() {
                     <button
                       onClick={() => {
                         saveComponent.reset()
+                        setComponentProduct(null)
                         setComponentDialog({ mode: 'edit', component })
                       }}
                     >
@@ -483,26 +509,29 @@ export function ProductsPage() {
       {componentDialog && (
         <Modal
           title={componentDialog.mode === 'create' ? 'Adicionar componente' : 'Editar componente'}
-          subtitle="Informe a quantidade necessária para uma unidade do produto."
-          onClose={() => setComponentDialog(null)}
-          onSubmit={(data) =>
-            saveComponent.mutate({
-              data,
-              component: componentDialog.mode === 'edit' ? componentDialog.component : undefined,
-            })
+          subtitle={
+            componentDialog.mode === 'create'
+              ? 'Busque o produto componente e informe a quantidade necessária.'
+              : 'Informe a quantidade necessária para uma unidade do produto.'
           }
+          onClose={closeComponentDialog}
+          onSubmit={submitComponent}
           pending={saveComponent.isPending}
+          submitDisabled={componentDialog.mode === 'create' && componentProduct === null}
           error={saveComponent.error}
         >
           <div className="form-grid">
             {componentDialog.mode === 'create' && (
-              <Field
-                name="componentProductId"
-                label="ID do produto componente"
-                type="number"
-                min="1"
-                required
-              />
+              <div className="field-full">
+                <ProductPicker
+                  label="Produto componente"
+                  value={componentProduct}
+                  onChange={setComponentProduct}
+                  disabledProductId={productId ?? undefined}
+                  disabledProductLabel="Produto atual"
+                  autoFocus
+                />
+              </div>
             )}
             <Field
               name="quantity"

@@ -178,20 +178,27 @@ export function SearchCard({
       <div>
         <label htmlFor={inputId}>{label}</label>
         <div className="search-input">
-          <Search size={19} aria-hidden="true" />
-          <input
-            id={inputId}
-            name="search"
-            value={value}
-            onChange={(event) => onChange(event.target.value)}
-            placeholder={placeholder}
-            inputMode={inputMode}
-            min={inputType === 'number' ? '1' : undefined}
-            maxLength={maxLength}
-            type={inputType}
-            required={required}
-          />
-          <button className="button button-dark" disabled={loading} aria-busy={loading}>
+          <div className="search-control">
+            <Search size={19} aria-hidden="true" />
+            <input
+              id={inputId}
+              name="search"
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+              placeholder={placeholder}
+              inputMode={inputMode}
+              min={inputType === 'number' ? '1' : undefined}
+              maxLength={maxLength}
+              type={inputType}
+              required={required}
+            />
+          </div>
+          <button
+            type="submit"
+            className="button button-dark search-submit"
+            disabled={loading}
+            aria-busy={loading}
+          >
             {loading ? (
               <>
                 <LoaderCircle className="spin" size={17} /> Buscando

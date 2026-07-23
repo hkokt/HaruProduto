@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -54,6 +55,25 @@ const searchPage: OffsetPage<ProductSearchResult> = {
       defaultMeasurementUnit: product.defaultMeasurementUnit,
       active: product.active,
       score: 1,
+    },
+  ],
+  offset: 0,
+  limit: 20,
+  totalElements: 1,
+  hasPrevious: false,
+  hasNext: false,
+}
+
+const componentSearchPage: OffsetPage<ProductSearchResult> = {
+  content: [
+    {
+      id: 11,
+      name: 'Grãos de café',
+      sku: 'GRAO-001',
+      type: 'RAW_MATERIAL',
+      defaultMeasurementUnit: 'KILOGRAM',
+      active: true,
+      score: 4.5,
     },
   ],
   offset: 0,
@@ -253,6 +273,53 @@ describe('ProductsPage', () => {
           type: 'FINISHED_PRODUCT',
           defaultMeasurementUnit: 'PACKAGE',
           active: true,
+        }),
+      })
+    })
+  })
+
+  it('adds a component selected through textual product search', async () => {
+    const user = userEvent.setup()
+    apiRequestMock.mockImplementation((path: string, _getToken: unknown, options?: RequestInit) => {
+      if (path === '/api/products/search?q=Gr%C3%A3os&offset=0&limit=20') {
+        return Promise.resolve(componentSearchPage)
+      }
+      if (path === '/api/products/42/components' && options?.method === 'POST') {
+        return Promise.resolve({})
+      }
+      if (path.startsWith('/api/products/search?')) return Promise.resolve(searchPage)
+      if (path === '/api/products/42/composition') return Promise.resolve(composition)
+      if (path === '/api/products/42') return Promise.resolve(product)
+      return Promise.reject(new Error(`Unexpected API request: ${path}`))
+    })
+
+    render(<ProductsPage />, { wrapper: ProductsHarness })
+
+    await user.click(await screen.findByRole('button', { name: /Café premium/ }))
+    await user.click(await screen.findByRole('button', { name: /Componente/ }))
+
+    const saveButton = screen.getByRole('button', { name: 'Salvar' })
+    expect(saveButton).toBeDisabled()
+    expect(
+      screen.queryByRole('spinbutton', { name: /ID do produto componente/ }),
+    ).not.toBeInTheDocument()
+
+    await user.type(screen.getByRole('combobox', { name: 'Produto componente' }), 'Grãos')
+    await user.click(await screen.findByRole('option', { name: /Grãos de café/ }))
+    await user.type(screen.getByRole('spinbutton', { name: /Quantidade/ }), '0.5')
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: /Unidade de medida/ }),
+      'KILOGRAM',
+    )
+    await user.click(saveButton)
+
+    await waitFor(() => {
+      expect(apiRequestMock).toHaveBeenCalledWith('/api/products/42/components', getAccessToken, {
+        method: 'POST',
+        body: JSON.stringify({
+          componentProductId: 11,
+          quantity: 0.5,
+          measurementUnit: 'KILOGRAM',
         }),
       })
     })

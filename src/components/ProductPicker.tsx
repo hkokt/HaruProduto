@@ -18,11 +18,20 @@ interface ProductPickerProps {
   value: ProductSelection | null
   onChange: (product: ProductSelection | null) => void
   autoFocus?: boolean
+  disabledProductId?: number
+  disabledProductLabel?: string
 }
 
 const searchDelay = 400
 
-export function ProductPicker({ label, value, onChange, autoFocus }: ProductPickerProps) {
+export function ProductPicker({
+  label,
+  value,
+  onChange,
+  autoFocus,
+  disabledProductId,
+  disabledProductLabel = 'Indisponível',
+}: ProductPickerProps) {
   const auth = useAuth()
   const inputId = useId()
   const listboxId = useId()
@@ -74,6 +83,7 @@ export function ProductPicker({ label, value, onChange, autoFocus }: ProductPick
   const loading = waitingForDebounce || searchQuery.isFetching
 
   function selectProduct(product: ProductSearchResult) {
+    if (product.id === disabledProductId) return
     setQuery('')
     setSearchTerm('')
     setOffset(0)
@@ -192,35 +202,41 @@ export function ProductPicker({ label, value, onChange, autoFocus }: ProductPick
                   : 'Não foi possível buscar os produtos.'}
               </div>
             ) : results.length ? (
-              results.map((product, index) => (
-                <button
-                  key={product.id}
-                  id={`${listboxId}-${product.id}`}
-                  type="button"
-                  role="option"
-                  aria-selected={index === activeIndex}
-                  className={
-                    index === activeIndex ? 'product-picker-option active' : 'product-picker-option'
-                  }
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onClick={() => selectProduct(product)}
-                >
-                  <span className="product-picker-main">
-                    <strong>{product.name}</strong>
-                    <small>
-                      SKU {product.sku} · ID {product.id}
-                    </small>
-                  </span>
-                  <span className="product-picker-unit">
-                    <small>Unidade</small>
-                    {unitLabels[product.defaultMeasurementUnit]}
-                  </span>
-                  <StatusBadge
-                    label={product.active ? 'Ativo' : 'Inativo'}
-                    tone={product.active ? 'success' : 'neutral'}
-                  />
-                </button>
-              ))
+              results.map((product, index) => {
+                const disabled = product.id === disabledProductId
+                return (
+                  <button
+                    key={product.id}
+                    id={`${listboxId}-${product.id}`}
+                    type="button"
+                    role="option"
+                    aria-selected={index === activeIndex}
+                    className={
+                      index === activeIndex
+                        ? 'product-picker-option active'
+                        : 'product-picker-option'
+                    }
+                    disabled={disabled}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => selectProduct(product)}
+                  >
+                    <span className="product-picker-main">
+                      <strong>{product.name}</strong>
+                      <small>
+                        SKU {product.sku} · ID {product.id}
+                      </small>
+                    </span>
+                    <span className="product-picker-unit">
+                      <small>Unidade</small>
+                      {unitLabels[product.defaultMeasurementUnit]}
+                    </span>
+                    <StatusBadge
+                      label={disabled ? disabledProductLabel : product.active ? 'Ativo' : 'Inativo'}
+                      tone={product.active && !disabled ? 'success' : 'neutral'}
+                    />
+                  </button>
+                )
+              })
             ) : (
               <div className="product-picker-message">
                 Nenhum produto encontrado. Revise o nome, SKU ou ID informado.
