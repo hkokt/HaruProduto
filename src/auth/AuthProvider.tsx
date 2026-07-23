@@ -11,6 +11,10 @@ const keycloak = new Keycloak({
 })
 let initialization: Promise<boolean> | null = null
 
+interface AuthProviderProps {
+  children: ReactNode
+}
+
 function getRoles(): UserRole[] {
   const realmRoles = keycloak.realmAccess?.roles ?? []
   const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? 'haru-api'
@@ -19,7 +23,7 @@ function getRoles(): UserRole[] {
   return (['admin', 'customer'] as UserRole[]).filter((role) => roles.has(role))
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: AuthProviderProps) {
   const [authenticated, setAuthenticated] = useState(false)
   const [initializing, setInitializing] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -42,7 +46,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => {
         if (!active) return
-        setError('Não foi possível conectar ao serviço de autenticação. Confirme se o Docker está em execução.')
+        setError(
+          'Não foi possível conectar ao serviço de autenticação. Confirme se o Docker está em execução.',
+        )
       })
       .finally(() => active && setInitializing(false))
 
@@ -54,7 +60,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     keycloak.onTokenExpired = () => {
       void keycloak.updateToken(30).catch(() => setAuthenticated(false))
     }
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [])
 
   const login = useCallback(async () => {

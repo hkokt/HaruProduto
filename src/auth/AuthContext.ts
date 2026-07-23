@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 
 export type UserRole = 'admin' | 'customer'
 
-export type AuthContextValue = {
+export interface AuthContextValue {
   authenticated: boolean
   initializing: boolean
   error: string | null
