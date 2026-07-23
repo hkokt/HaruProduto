@@ -78,7 +78,7 @@ export function DashboardPage() {
             to="/app/products"
             icon={<Boxes />}
             title="Produtos"
-            description="Consulte cadastros e fichas técnicas por ID."
+            description="Consulte cadastros e fichas técnicas por nome, ID ou SKU."
           />
           <ModuleLink
             to="/app/inventory"

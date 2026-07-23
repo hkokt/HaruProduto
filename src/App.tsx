@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, NavLink, Route, Routes } from 'react-router-dom'
 import {
   Boxes,
+  CircleHelp,
   CircleUserRound,
   Factory,
   LayoutDashboard,
@@ -8,7 +9,6 @@ import {
   LogOut,
   Menu,
   PackagePlus,
-  Settings,
   ShieldCheck,
   Sparkles,
   X,
@@ -17,6 +17,7 @@ import { useState } from 'react'
 import './App.css'
 import { useAuth } from './auth/AuthContext'
 import { DashboardPage } from './pages/DashboardPage'
+import { HelpPage } from './pages/HelpPage'
 import { InventoryPage } from './pages/InventoryPage'
 import { ProductsPage } from './pages/ProductsPage'
 import { ProductionPage } from './pages/ProductionPage'
@@ -132,10 +133,10 @@ function AppShell() {
             </NavLink>
           ))}
           <span className="nav-label nav-label-spaced">Sistema</span>
-          <a href="#configuracoes">
-            <Settings size={19} />
-            Configurações
-          </a>
+          <NavLink to="/app/help" onClick={() => setMenuOpen(false)}>
+            <CircleHelp size={19} />
+            Como usar
+          </NavLink>
         </nav>
         <div className="sidebar-profile">
           <CircleUserRound size={35} />
@@ -169,6 +170,7 @@ function AppShell() {
             <Route path="products" element={<ProductsPage />} />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="production" element={<ProductionPage />} />
+            <Route path="help" element={<HelpPage />} />
           </Routes>
         </div>
       </div>

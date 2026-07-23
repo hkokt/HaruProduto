@@ -1295,6 +1295,524 @@ th {
     transform: rotate(360deg);
   }
 }
+
+.guide-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.65fr);
+  gap: 28px;
+  align-items: center;
+  padding: 30px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 12% 20%, #4d765ab3 0, transparent 35%),
+    linear-gradient(135deg, var(--green-950), #294c35);
+  color: #fff;
+}
+.guide-hero-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.guide-hero-copy h2 {
+  max-width: 720px;
+  margin: 0 0 10px;
+  font: 800 clamp(24px, 2.6vw, 34px)/1.16 Manrope;
+  letter-spacing: -0.035em;
+}
+.guide-hero-copy p,
+.guide-hero-note p {
+  margin: 0;
+  color: #d9e6dc;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.guide-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: var(--green-100);
+  color: var(--green-700);
+}
+.guide-icon svg {
+  width: 21px;
+}
+.guide-icon-light {
+  background: #ffffff1c;
+  color: #d9ecdd;
+}
+.guide-hero-note {
+  display: flex;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid #ffffff21;
+  border-radius: 12px;
+  background: #ffffff0e;
+}
+.guide-hero-note > svg {
+  flex: 0 0 auto;
+  color: #d9ecdd;
+}
+.guide-hero-note strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+.guide-hero-note p {
+  font-size: 12px;
+  line-height: 1.55;
+}
+.guide-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.guide-index a {
+  padding: 8px 11px;
+  border-radius: 7px;
+  color: var(--green-700);
+  font-size: 12px;
+  font-weight: 700;
+}
+.guide-index a:hover {
+  background: var(--green-50);
+}
+.guide-index a:focus-visible,
+.guide-module-link:focus-visible {
+  outline: 3px solid #4c835c38;
+  outline-offset: 2px;
+}
+.guide-section,
+.guide-module-card {
+  scroll-margin-top: 24px;
+}
+.guide-section {
+  margin-top: 48px;
+}
+.guide-section-heading {
+  max-width: 720px;
+  margin-bottom: 22px;
+}
+.guide-section-heading h2,
+.guide-footer-card h2,
+.guide-caution h2 {
+  margin: 0 0 8px;
+  font: 800 clamp(22px, 2.2vw, 29px)/1.2 Manrope;
+  letter-spacing: -0.03em;
+}
+.guide-section-heading p,
+.guide-footer-card p,
+.guide-caution p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.guide-workflow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.guide-workflow-step {
+  position: relative;
+  min-height: 184px;
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.guide-workflow-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.guide-step-number {
+  color: #a1aaa2;
+  font: 700 11px Manrope;
+  letter-spacing: 0.08em;
+}
+.guide-workflow-step h3 {
+  margin: 0 0 7px;
+  font: 700 16px/1.3 Manrope;
+}
+.guide-workflow-step p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-workflow-arrow {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -19px;
+  width: 25px;
+  padding: 4px;
+  border-radius: 50%;
+  background: #f5f7f4;
+  color: #8a958c;
+  transform: translateY(-50%);
+}
+.guide-tip {
+  display: flex;
+  gap: 13px;
+  margin-top: 14px;
+  padding: 17px 19px;
+  border-left: 3px solid var(--green-700);
+  border-radius: 0 10px 10px 0;
+  background: var(--green-50);
+}
+.guide-tip > svg {
+  flex: 0 0 auto;
+  color: var(--green-700);
+}
+.guide-tip strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+.guide-tip p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.guide-access-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.guide-access-grid article {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.guide-access-grid h3 {
+  margin: 0 0 6px;
+  font: 700 15px Manrope;
+}
+.guide-access-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.guide-profile-card {
+  display: flex;
+  gap: 17px;
+  padding: 23px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.guide-profile-card-admin {
+  border-color: #cadccb;
+  background: linear-gradient(145deg, #fff, var(--green-50));
+}
+.guide-profile-card h3 {
+  margin: 0 0 5px;
+  font: 700 17px Manrope;
+}
+.guide-profile-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.guide-check-list li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #465148;
+  font-size: 13px;
+}
+.guide-check-list svg {
+  flex: 0 0 auto;
+  width: 15px;
+  color: var(--green-700);
+}
+.guide-module-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.guide-module-card {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #fff;
+}
+.guide-module-heading,
+.guide-module-body {
+  padding: 25px;
+}
+.guide-module-heading {
+  display: flex;
+  gap: 15px;
+  border-right: 1px solid var(--line);
+  background: #fbfcfa;
+}
+.guide-module-heading h3 {
+  margin: 0 0 5px;
+  font: 800 21px Manrope;
+  letter-spacing: -0.025em;
+}
+.guide-module-heading p,
+.guide-module-body p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-module-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.9fr);
+  gap: 22px;
+}
+.guide-module-body h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+}
+.guide-module-body ol {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding-left: 20px;
+}
+.guide-module-body li {
+  padding-left: 3px;
+  color: #4f5951;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.guide-module-body li::marker {
+  color: var(--green-700);
+  font-weight: 700;
+}
+.guide-module-body aside {
+  align-self: start;
+  padding: 15px;
+  border-radius: 9px;
+  background: var(--green-50);
+}
+.guide-module-body aside strong {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  margin-bottom: 7px;
+  color: var(--green-900);
+  font-size: 12px;
+}
+.guide-module-link {
+  display: flex;
+  grid-column: 1/-1;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  padding: 13px 22px;
+  border-top: 1px solid var(--line);
+  color: var(--green-700);
+  font-size: 12px;
+  font-weight: 700;
+}
+.guide-module-link:hover {
+  background: var(--green-50);
+}
+.guide-caution {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 22px 25px;
+  border: 1px solid #ead8ae;
+  border-radius: 12px;
+  background: #fbf5e7;
+}
+.guide-caution > svg {
+  flex: 0 0 auto;
+  color: #987426;
+}
+.guide-caution h2 {
+  font-size: 17px;
+}
+.guide-caution p {
+  color: #716340;
+  font-size: 13px;
+}
+.guide-glossary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+.guide-glossary div {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.guide-glossary dt {
+  margin-bottom: 6px;
+  color: var(--green-900);
+  font: 700 14px Manrope;
+}
+.guide-glossary dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.guide-questions {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.guide-questions details + details {
+  border-top: 1px solid var(--line);
+}
+.guide-questions summary {
+  padding: 17px 20px;
+  color: #38443a;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.guide-questions details[open] summary {
+  color: var(--green-700);
+}
+.guide-questions p {
+  max-width: 850px;
+  margin: -4px 20px 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.guide-footer-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin-top: 48px;
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #fff;
+}
+.guide-footer-card h2 {
+  font-size: 21px;
+}
+.guide-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 1100px) {
+  .guide-hero,
+  .guide-module-card {
+    grid-template-columns: 1fr;
+  }
+  .guide-hero-note {
+    max-width: 650px;
+  }
+  .guide-workflow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .guide-access-grid {
+    grid-template-columns: 1fr;
+  }
+  .guide-workflow-step:nth-child(2) .guide-workflow-arrow {
+    display: none;
+  }
+  .guide-module-heading {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 760px) {
+  .guide-hero {
+    padding: 23px 20px;
+  }
+  .guide-hero-copy {
+    flex-direction: column;
+  }
+  .guide-index {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .guide-index a {
+    padding: 9px 10px;
+  }
+  .guide-section {
+    margin-top: 40px;
+  }
+  .guide-workflow,
+  .guide-access-grid,
+  .guide-profile-grid,
+  .guide-module-body,
+  .guide-glossary {
+    grid-template-columns: 1fr;
+  }
+  .guide-workflow-step {
+    min-height: auto;
+  }
+  .guide-workflow-arrow {
+    display: none;
+  }
+  .guide-profile-card,
+  .guide-module-heading,
+  .guide-module-body {
+    padding: 20px;
+  }
+  .guide-profile-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .guide-module-body {
+    gap: 18px;
+  }
+  .guide-caution {
+    padding: 19px;
+  }
+  .guide-footer-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .guide-footer-actions,
+  .guide-footer-actions .button {
+    width: 100%;
+  }
+}
 button:disabled {
   cursor: not-allowed;
   opacity: 0.6;

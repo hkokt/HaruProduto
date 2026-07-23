@@ -32,6 +32,10 @@ test('authenticated user can access every domain module', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Produção', level: 1 })).toBeVisible()
   await expect(page.getByLabel('Localizar ordem')).toBeVisible()
   await assertRoleAction(page, expectedRole, 'Nova ordem')
+
+  await page.getByRole('link', { name: 'Como usar', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Como usar o Haru', level: 1 })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Como usar cada módulo' })).toBeVisible()
 })
 
 async function assertRoleAction(

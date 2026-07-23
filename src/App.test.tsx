@@ -21,6 +21,10 @@ vi.mock('./pages/ProductionPage', () => ({
   ProductionPage: () => <h1>Produção</h1>,
 }))
 
+vi.mock('./pages/HelpPage', () => ({
+  HelpPage: () => <h1>Guia do sistema</h1>,
+}))
+
 function createAuth(overrides: Partial<AuthContextValue> = {}): AuthContextValue {
   return {
     authenticated: false,
@@ -84,5 +88,21 @@ describe('App routing and authentication', () => {
     expect(screen.getByText('Ana Souza')).toBeInTheDocument()
     expect(screen.getByText('Administrador')).toBeInTheDocument()
     expect(screen.getByText('Conectado')).toBeInTheDocument()
+  })
+
+  it('opens the user guide from the protected navigation', async () => {
+    const user = userEvent.setup()
+    const auth = createAuth({
+      authenticated: true,
+      username: 'maria.customer',
+      displayName: 'Maria Lima',
+      roles: ['customer'],
+    })
+    renderApp(auth, '/app')
+
+    await user.click(screen.getByRole('link', { name: 'Como usar' }))
+
+    expect(await screen.findByRole('heading', { name: 'Guia do sistema' })).toBeInTheDocument()
+    expect(window.location.pathname).toBe('/app/help')
   })
 })

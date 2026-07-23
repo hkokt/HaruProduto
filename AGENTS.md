@@ -42,7 +42,8 @@ source and the backend contract.
 - `src/components/ProductPicker.tsx`: paginated product autocomplete by name,
   numeric ID, or SKU.
 - `src/components/OffsetPagination.tsx`: reusable offset/limit pagination.
-- `src/pages`: Dashboard, Products, Inventory, and Production screens.
+- `src/pages`: Dashboard, Products, Inventory, Production, and static user-help
+  screens.
 - `src/domain.ts`: presentation labels and domain formatting helpers.
 - `src/test`: shared Vitest and MSW setup.
 - `e2e`: Playwright authentication, domain smoke, and live-data flows.
@@ -238,4 +239,3 @@ npm run test:e2e
 `npm run format` changes files mechanically; inspect the resulting diff. A
 successful Vite build does not replace test execution. Always report the exact
 validation commands run and any check that could not be executed.
-
